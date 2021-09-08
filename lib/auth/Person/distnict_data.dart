@@ -836,7 +836,7 @@ class _distinictAccountCreate1State extends State<distinictAccountCreate1> {
           child: Center(
             child: AwesomeLoader(
               loaderType: AwesomeLoader.AwesomeLoader3,
-              color: Colors.blue,
+              color: Colors.orangeAccent,
             ),
           ),
         ),
@@ -1098,7 +1098,7 @@ class _distinictAccountCreate2State extends State<distinictAccountCreate2> {
           child: Center(
             child: AwesomeLoader(
               loaderType: AwesomeLoader.AwesomeLoader3,
-              color: Colors.blue,
+              color: Colors.orangeAccent,
             ),
           ),
         ),
@@ -1332,7 +1332,6 @@ class _distnictAccountCreatePasswordSetState extends State<distnictAccountCreate
   Widget build(BuildContext context) {
     TextStyle defaultStyle = TextStyle(color: Colors.grey);
     TextStyle linkStyle = TextStyle(color: Colors.blue);
-    print(widget.otp);
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(left:25,right: 25),
