@@ -50,13 +50,16 @@ class _AddProjectState extends State<AddProject> {
     // print(body);
     if(body['status'] == 1){
       var result = body['data'];
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var user = localStorage.getString('personData');
+      final res = jsonDecode(user);
       // var formattedDate ="${todayDate.year}-${todayDate.month}-${todayDate.day}";
       var now = new DateTime.now();
       var formatter = new DateFormat('yyyy-MM-dd');
       String todayDate = formatter.format(now);
       // result['pEmployeeDatas'].forEach((item) => print(item['person']));
       setState(() {
-
+        seletedemployee = res['id'];
         employeeList = result['pEmployeeDatas'];
         categoryList = result['pCategoryDatas'];
         CreateddateController.text = todayDate;

@@ -88,7 +88,7 @@ class _AddTaskState extends State<AddTask> {
 
 
   Future<String> _ProjBasedCate(int ProjId) async {
-    print(ProjId);
+
     bl = new BottomLoader(
       context,
       showLogs: true,
@@ -140,15 +140,21 @@ class _AddTaskState extends State<AddTask> {
     var body = json.decode(res.body);
     if(body['status'] == 1){
       var result = body['data'];
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var user = localStorage.getString('personData');
+      final res = jsonDecode(user);
+
       var now = new DateTime.now();
       var formatter = new DateFormat('yyyy-MM-dd');
       String todayDate = formatter.format(now);
       setState(() {
+        Assignedbyemployee = res['id'];
+        Assignedtoemployee = res['id'];
         AssignedbyList = result['pAssignedbyList'];
         AssignedtoList = result['pAssignedtoList'];
         FollowerList = result['pFollowerList'];
         tempFollowerList = result['pFollowerList'];
-        // result['pFollowerList'].forEach((item) => _companies .add(CompanyWidget(int.parse(item['person_id']), item['first_name'])));
+        FollowerList.forEach((item) => _companies .add(CompanyWidget(item['id'], item['first_name'])));
         categoryList = result['pCategoryDatas'];
         projectList = result['pProjectDatas'];
         CreateddateController.text = todayDate;
@@ -172,6 +178,7 @@ class _AddTaskState extends State<AddTask> {
       _isLoading = true;
     });
     int orgId = await Network().GetActiveOrg();
+
     var data = {'pName' : name,'pDetails':Details,'pStartDate':StartDate,'pEndDate':EndDate,'pAssignedBy':assignedby,'pAssignedTo':assignedto,'pCategoryId':category,'pProjectId':project,'pProrityId':prority,'pFollower':_selected_followers,'orgId':orgId};
 
     var res = await Network().postMethodWithToken(data, '/taskStore');
@@ -383,7 +390,7 @@ class _AddTaskState extends State<AddTask> {
                                   setState(() {
                                     Assignedbyemployee = newValue;
                                     _companies = [];
-                                    tempFollowerList.forEach((item) => _companies .add(CompanyWidget(int.parse(item['person_id']), item['first_name'])));
+                                    tempFollowerList.forEach((item) => _companies .add(CompanyWidget(item['id'], item['first_name'])));
                                     _companies.removeWhere((item) => item.id == Assignedbyemployee);
                                     _companies.removeWhere((item) => item.id == Assignedtoemployee);
                                     // FollowerList.removeWhere((item) => int.parse(item['person_id']) == Assignedbyemployee);
@@ -411,7 +418,6 @@ class _AddTaskState extends State<AddTask> {
                               alignedDropdown: true,
                               child: DropdownButton(
                                 value: Assignedtoemployee,
-
                                 hint: Text('Assigned To'),
                                 items: AssignedtoList?.map((item) {
                                   return new DropdownMenuItem(
@@ -425,7 +431,7 @@ class _AddTaskState extends State<AddTask> {
 
                                     Assignedtoemployee = newValue;
                                     _companies = [];
-                                    tempFollowerList.forEach((item) => _companies .add(CompanyWidget(int.parse(item['person_id']), item['first_name'])));
+                                    tempFollowerList.forEach((item) => _companies .add(CompanyWidget(item['id'], item['first_name'])));
                                     _companies.removeWhere((item) => item.id == Assignedtoemployee);
                                     _companies.removeWhere((item) => item.id == Assignedbyemployee);
                                     if(_selected_followers != null){
@@ -464,7 +470,6 @@ class _AddTaskState extends State<AddTask> {
                           color: Colors.grey
                       ),),
                           ),
-
                           Flexible(
                             child: DropdownButtonHideUnderline(
                               child: ButtonTheme(
@@ -545,32 +550,25 @@ class _AddTaskState extends State<AddTask> {
                   ),
                 ),
                 // temporry hide by Ajith
-                // Container(
-                //   padding: EdgeInsets.only(left: 10,right: 10),
-                //   child: MultiSelectBottomSheetField(
-                //     initialValue: _selected_followers,
-                //     initialChildSize: 0.7,
-                //     maxChildSize: 0.95,
-                //     title: Text("Select Followers"),
-                //     buttonText: Text("Followers"),
-                //     items:  _companies.map((animal) => MultiSelectItem(animal.id, animal.name)).toList(),
-                //     searchable: true,
-                //     onConfirm: (values) {
-                //       setState(() {
-                //         _selected_followers = values;
-                //       });
-                //
-                //     },
-                //     // chipDisplay: MultiSelectChipDisplay(
-                //     //   onTap: (item) {
-                //     //     setState(() {
-                //     //       _selectedAnimals3.remove(item);
-                //     //     });
-                //     //     _multiSelectKey.currentState.validate();
-                //     //   },
-                //     // ),
-                //   ),
-                // ),
+                Container(
+                  padding: EdgeInsets.only(left: 10,right: 10),
+                  child: MultiSelectBottomSheetField(
+                    initialValue: _selected_followers,
+                    initialChildSize: 0.7,
+                    maxChildSize: 0.95,
+                    title: Text("Select Followers"),
+                    buttonText: Text("Followers"),
+                    items:  _companies.map((item) =>
+                        MultiSelectItem(item.id, item.name)).toList(),
+                    searchable: true,
+                    onConfirm: (values) {
+                      setState(() {
+                        _selected_followers = values;
+                      });
+                    },
+
+                  ),
+                ),
 
               ],
             ),
@@ -608,7 +606,7 @@ class _AddTaskState extends State<AddTask> {
                     setState(() {
                       seletedcategory = null;
                       seletedproject = null;
-                      Assignedtoemployee = null;
+                      // Assignedtoemployee = null;
                       _selected_followers.clear();
                     });
                   }:null,

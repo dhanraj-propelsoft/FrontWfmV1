@@ -52,6 +52,8 @@ dependencies:
   bottom_loader: ^0.2.2
   connectivity: ^3.0.6
   email_validator: ^2.0.1
+  flutter_radio_group: ^2.1.0
+  grouped_buttons_ns: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

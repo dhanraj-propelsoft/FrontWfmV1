@@ -21,26 +21,26 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
   int initalindex;
   bool firstOrg = false;
   BottomLoader bl;
 
-  _load_data()async{
+  _load_data() async {
     int org_id = await Network().GetActiveOrg();
-    if(org_id != 0){
+    if (org_id != 0) {
       setState(() {
         firstOrg = true;
       });
     }
   }
+
   @override
   void initState() {
     _load_data();
     super.initState();
     if (widget.index == null) {
       setState(() {
-        initalindex = 3;
+        initalindex = 0;
       });
     } else {
       setState(() {
@@ -93,7 +93,6 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-
   TabBar get _tabBar => TabBar(
         indicatorColor: Colors.orangeAccent,
         labelColor: Colors.black,
@@ -133,9 +132,7 @@ class _MainPageState extends State<MainPage> {
               child: _tabBar,
             ),
           ),
-          actions: <Widget>[
-
-          ],
+          actions: <Widget>[],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: firstOrg

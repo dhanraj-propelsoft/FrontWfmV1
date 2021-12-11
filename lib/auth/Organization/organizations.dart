@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:propel/Settings/OrganizationSettings.dart';
 import 'package:propel/auth/Organization/AddOrganization.dart';
 import 'package:propel/network_utils/api.dart';
 import 'dart:convert';
@@ -14,7 +15,6 @@ class Organizations extends StatefulWidget {
 }
 
 class _OrganizationsState extends State<Organizations> {
-
   BottomLoader bl;
   bool isSwitched = false;
   bool frstorg = true;
@@ -44,30 +44,27 @@ class _OrganizationsState extends State<Organizations> {
     return OrganizationId;
   }
 
-
-
   Future<List> orgData() async {
     var res = await Network().getMethodWithToken('/organization_list');
     var body = json.decode(res.body);
-    
-    if(body['status'] == 1){
+    print(body['data']);
+    if (body['status'] == 1) {
       var result = body['data'];
-        setState(() {
-          switchList = result;
-        });
+      setState(() {
+        switchList = result;
+      });
       return result;
-    }else{
+    } else {
       Fluttertoast.showToast(
-                  msg: "Server Error,Contact Admin.",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  backgroundColor: Colors.grey[200],
-                  textColor: Colors.black);
+          msg: "Server Error,Contact Admin.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.grey[200],
+          textColor: Colors.black);
     }
   }
 
-  Future<List> _onchanged(bool value,int id) async {
-
+  Future<List> _onchanged(bool value, int id) async {
     bl = new BottomLoader(
       context,
       showLogs: true,
@@ -77,7 +74,7 @@ class _OrganizationsState extends State<Organizations> {
       message: 'Please wait...',
     );
     bl.display();
-    var data = {'orgId' : id,'status':value?1:0};
+    var data = {'orgId': id, 'status': value ? 1 : 0};
     var res = await Network().postMethodWithToken(data, '/switch_org');
     var body = json.decode(res.body);
     print(body);
@@ -90,7 +87,6 @@ class _OrganizationsState extends State<Organizations> {
           backgroundColor: Colors.grey[200],
           textColor: Colors.black);
       myFuture = orgData();
-
     }
   }
   //
@@ -123,8 +119,6 @@ class _OrganizationsState extends State<Organizations> {
   //   //   myFuture = orgData();
   //   //   bl.close();
   // }
-
-
 
   @override
   void initState() {
@@ -167,20 +161,22 @@ class _OrganizationsState extends State<Organizations> {
                 )
               ],
             ),
-            Divider(thickness: 01.0,),
+            Divider(
+              thickness: 01.0,
+            ),
             Expanded(
               child: FutureBuilder<List>(
                   future: myFuture,
-                  builder: (context,snapshot){
-                    if(snapshot.hasError){
-                      print('Error in Loading'+snapshot.error.toString());
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      print('Error in Loading' + snapshot.error.toString());
                     }
-                    if(snapshot.hasData){
-                      if(snapshot.data.length == 0){
+                    if (snapshot.hasData) {
+                      if (snapshot.data.length == 0) {
                         return Container(
                           child: Center(child: Text("Organization is empty")),
                         );
-                      }else {
+                      } else {
                         return Scaffold(
                           body: SingleChildScrollView(
                             child: Container(
@@ -195,25 +191,26 @@ class _OrganizationsState extends State<Organizations> {
                                       return ListTile(
                                         leading: CircleAvatar(
                                           // backgroundImage: AssetImage(widget.image),
-                                          child: Text(
-                                              snapshot.data[i]['pName'].toString()
-                                                  .substring(0, 1)
-                                                  .toUpperCase()),
+                                          child: Text(snapshot.data[i]['pName']
+                                              .toString()
+                                              .substring(0, 1)
+                                              .toUpperCase()),
                                           maxRadius: 20,
                                         ),
                                         title: Text(snapshot.data[i]['pName']),
                                         trailing: Container(
                                             width: 60,
                                             child: Switch(
-                                              value: switchList[i]['pIsdefault'],
-                                              onChanged: (bool expanding) => _onchanged(expanding,snapshot.data[i]['pId']),
+                                              value: switchList[i]
+                                                  ['pIsdefault'],
+                                              onChanged: (bool expanding) =>
+                                                  _onchanged(expanding,
+                                                      snapshot.data[i]['pId']),
                                               activeColor: Colors.white,
                                               activeTrackColor: Colors.green,
                                               inactiveThumbColor: Colors.white,
                                               inactiveTrackColor: Colors.red,
-                                            )
-                                        ),
-
+                                            )),
                                         onTap: () {},
                                       );
                                     },
@@ -224,8 +221,7 @@ class _OrganizationsState extends State<Organizations> {
                           ),
                         );
                       }
-                    }
-                    else{
+                    } else {
                       return Container(
                         child: Center(
                           child: AwesomeLoader(
@@ -240,8 +236,6 @@ class _OrganizationsState extends State<Organizations> {
           ],
         ),
       ),
-
-
     );
   }
 }

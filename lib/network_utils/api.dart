@@ -3,9 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Network {
-  final String _url = 'http://localhost/wfm-main-refactor/api';
+  final String _url = 'http://127.0.0.1:8000/api';
 
-  // final String _url = 'http://wfm.mypropelsoft.com/api';
+  //final String _url = 'http://wfm.mypropelsoft.com/api';
   var token;
   var alldata;
 
@@ -15,29 +15,24 @@ class Network {
   }
 
   _setHeaders() => {
-    'Content-type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer $token'
-  };
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      };
 
-  
   GetActiveOrg() async {
     var fullUrl = _url + "/getActiveOrg";
     await _getToken();
-    var response =  await http.get(fullUrl, headers: _setHeaders());
+    var response = await http.get(fullUrl, headers: _setHeaders());
     var body = json.decode(response.body);
 
-    if(body['data'] != null) {
+    if (body['data'] != null) {
       var res = body['data']['organization_id'];
-      return  int.parse(res);
-    }else{
+      return int.parse(res);
+    } else {
       return 0;
     }
-
-
-
   }
-
 
   postMethodWithToken(data, apiUrl) async {
     await _getToken();

@@ -782,130 +782,134 @@ class _NewAccountCreate1State extends State<NewAccountCreate1> {
           },
           ),
         ),
-        body: Container(
-          padding: EdgeInsets.only(left: 25, right: 25),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Salution',
-                      style: TextStyle(),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(left: 25, right: 25),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Salution',
+                          style: TextStyle(),
+                        ),
+                        DropdownButton(
+                          hint: Text('Select Salution'),
+                          items: SalutionList?.map((item) {
+                            return new DropdownMenuItem(
+                              child: new Text(item['name']),
+                              value: item['id'],
+                            );
+                          })?.toList() ?? [],
+                          value: SalutionId,
+                          onChanged: (value) {
+                            setState(() {
+                              SalutionId = value;
+                            });
+                          },
+                        ),
+                      ],
                     ),
-                    DropdownButton(
-                      hint: Text('Select Salution'),
-                      items: SalutionList?.map((item) {
-                        return new DropdownMenuItem(
-                          child: new Text(item['name']),
-                          value: item['id'],
-                        );
-                      })?.toList() ?? [],
-                      value: SalutionId,
-                      onChanged: (value) {
-                        setState(() {
-                          SalutionId = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              TextField(
-                onChanged: (val) {
+                  ),
+                  TextField(
+                    onChanged: (val) {
 
-                  if (val.trim().isEmpty) {
-                    setState(() {
-                      isButtonEnabled = false;
-                    });
-                  } else {
-                    setState(() {
-                      isButtonEnabled = true;
-                    });
-                  }
-                },
-                obscureText: false,
-                decoration: InputDecoration(
-                  // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                  hintText: "Enter your First Name",
-                  labelText: "First Name*",
-                  labelStyle: TextStyle(color: Colors.red)
-                  // errorText: phoneVal ? "Mobile Number is required":null,
-                  // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                ),
-                controller: FirstName,
+                      if (val.trim().isEmpty) {
+                        setState(() {
+                          isButtonEnabled = false;
+                        });
+                      } else {
+                        setState(() {
+                          isButtonEnabled = true;
+                        });
+                      }
+                    },
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your First Name",
+                      labelText: "First Name*",
+                      labelStyle: TextStyle(color: Colors.red)
+                      // errorText: phoneVal ? "Mobile Number is required":null,
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
+                    ),
+                    controller: FirstName,
+                  ),
+                  TextField(
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your Middle Name",
+                      labelText: "Middle Name",
+                      // errorText: phoneVal ? "Mobile Number is required":null,
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
+                    ),
+                    controller: MiddleName,
+                  ),
+                  TextField(
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your Last Name",
+                      labelText: "Last Name",
+                      // errorText: phoneVal ? "Mobile Number is required":null,
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
+                    ),
+                    controller: LastName,
+                  ),
+                  TextField(
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your Nick Name",
+                      labelText: "Nick Name or Alias",
+                      // errorText: phoneVal ? "Mobile Number is required":null,
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
+                    ),
+                    controller: Alias,
+                  ),
+                  SizedBox(height: 20,),
+                  RaisedButton(
+                    color: Colors.orange,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        // Icon(Icons.direc,color: Colors.white),
+                        Text('Next', style: TextStyle(color: Colors.white,),),
+                      ],
+                    ),
+                    onPressed: isButtonEnabled ? () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  NewAccountCreate2(
+                                    personId:widget.personId,
+                                    mobileno: widget.mobileno,
+                                    email: widget.email,
+                                    salution: SalutionId,
+                                    first_name: FirstName.text,
+                                    middle_name: MiddleName.text,
+                                    alisas: Alias.text,
+                                    last_name: LastName.text,
+                                  )));
+                    } : null,
+                  ),
+                ],
               ),
-              TextField(
-                obscureText: false,
-                decoration: InputDecoration(
-                  // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                  hintText: "Enter your Middle Name",
-                  labelText: "Middle Name",
-                  // errorText: phoneVal ? "Mobile Number is required":null,
-                  // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                ),
-                controller: MiddleName,
-              ),
-              TextField(
-                obscureText: false,
-                decoration: InputDecoration(
-                  // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                  hintText: "Enter your Last Name",
-                  labelText: "Last Name",
-                  // errorText: phoneVal ? "Mobile Number is required":null,
-                  // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                ),
-                controller: LastName,
-              ),
-              TextField(
-                obscureText: false,
-                decoration: InputDecoration(
-                  // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                  hintText: "Enter your Nick Name",
-                  labelText: "Nick Name or Alias",
-                  // errorText: phoneVal ? "Mobile Number is required":null,
-                  // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                ),
-                controller: Alias,
-              ),
-              SizedBox(height: 20,),
-              RaisedButton(
-                color: Colors.orange,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    // Icon(Icons.direc,color: Colors.white),
-                    Text('Next', style: TextStyle(color: Colors.white,),),
-                  ],
-                ),
-                onPressed: isButtonEnabled ? () {
-                  Navigator.push(context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              NewAccountCreate2(
-                                personId:widget.personId,
-                                mobileno: widget.mobileno,
-                                email: widget.email,
-                                salution: SalutionId,
-                                first_name: FirstName.text,
-                                middle_name: MiddleName.text,
-                                alisas: Alias.text,
-                                last_name: LastName.text,
-                              )));
-                } : null,
-              ),
-            ],
+            ),
           ),
         ),
 
@@ -1044,111 +1048,115 @@ class _NewAccountCreate2State extends State<NewAccountCreate2> {
           },
           ),
         ),
-        body: Container(
-          padding: EdgeInsets.only(left: 25, right: 25),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Gender',
-                      style: TextStyle(),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(left: 25, right: 25),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Gender',
+                          style: TextStyle(),
+                        ),
+                        DropdownButton(
+                          hint: Text('Select'),
+                          items: Gender?.map((item) {
+                            return new DropdownMenuItem(
+                              child: new Text(item['name']),
+                              value: item['id'],
+                            );
+                          })?.toList() ?? [],
+                          value: GenderId,
+                          onChanged: (value) {
+                            setState(() {
+                              GenderId = value;
+                            });
+                          },
+                        ),
+                      ],
                     ),
-                    DropdownButton(
-                      hint: Text('Select'),
-                      items: Gender?.map((item) {
-                        return new DropdownMenuItem(
-                          child: new Text(item['name']),
-                          value: item['id'],
-                        );
-                      })?.toList() ?? [],
-                      value: GenderId,
-                      onChanged: (value) {
-                        setState(() {
-                          GenderId = value;
-                        });
-                      },
+                  ),
+                  TextField(
+                    readOnly: true,
+                    controller: DOB,
+                    style: TextStyle(fontSize: 14),
+                    decoration: InputDecoration(
+                      hintText: 'Pick Date',
+                      labelText: 'DOB*',
+                      labelStyle: TextStyle(fontSize: 14.0,color: Colors.red),
+                      hintStyle: TextStyle(fontSize: 14.0),
+                      // suffixIcon: Icon(Icons.calendar_today_rounded,size: 18.0)
                     ),
-                  ],
-                ),
-              ),
-              TextField(
-                readOnly: true,
-                controller: DOB,
-                style: TextStyle(fontSize: 14),
-                decoration: InputDecoration(
-                  hintText: 'Pick Date',
-                  labelText: 'DOB*',
-                  labelStyle: TextStyle(fontSize: 14.0,color: Colors.red),
-                  hintStyle: TextStyle(fontSize: 14.0),
-                  // suffixIcon: Icon(Icons.calendar_today_rounded,size: 18.0)
-                ),
-                onTap: () async {
-                  // final DateTime now = DateTime.now();
-                  final DateFormat formatter = DateFormat('dd-MM-yyyy');
-                  var date = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime(2100)
-                  );
-                  DOB.text = date.toString().substring(0, 10);
-                  setState(() {
-                    isButtonEnabled = true;
-                  });
+                    onTap: () async {
+                      // final DateTime now = DateTime.now();
+                      final DateFormat formatter = DateFormat('dd-MM-yyyy');
+                      var date = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime(2100)
+                      );
+                      DOB.text = date.toString().substring(0, 10);
+                      setState(() {
+                        isButtonEnabled = true;
+                      });
 
-                },),
-              SizedBox(height: 20,),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Blood Group',
-                      style: TextStyle(),
+                    },),
+                  SizedBox(height: 20,),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Blood Group',
+                          style: TextStyle(),
+                        ),
+                        DropdownButton(
+                          hint: Text('Select'),
+                          items: BloodGroup?.map((item) {
+                            return new DropdownMenuItem(
+                              child: new Text(item['name']),
+                              value: item['id'],
+                            );
+                          })?.toList() ?? [],
+                          value: BloodGroupId,
+                          onChanged: (value) {
+                            setState(() {
+                              BloodGroupId = value;
+                            });
+                          },
+                        ),
+                      ],
                     ),
-                    DropdownButton(
-                      hint: Text('Select'),
-                      items: BloodGroup?.map((item) {
-                        return new DropdownMenuItem(
-                          child: new Text(item['name']),
-                          value: item['id'],
-                        );
-                      })?.toList() ?? [],
-                      value: BloodGroupId,
-                      onChanged: (value) {
-                        setState(() {
-                          BloodGroupId = value;
-                        });
-                      },
+                  ),
+                  SizedBox(height: 20,),
+                  RaisedButton(
+                    color: Colors.orange,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        // Icon(Icons.direc,color: Colors.white),
+                        Text('Next', style: TextStyle(color: Colors.white,),),
+                      ],
                     ),
-                  ],
-                ),
+                    onPressed: isButtonEnabled?() {
+                      OTP_send();
+                    }:null,
+                  ),
+                ],
               ),
-              SizedBox(height: 20,),
-              RaisedButton(
-                color: Colors.orange,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    // Icon(Icons.direc,color: Colors.white),
-                    Text('Next', style: TextStyle(color: Colors.white,),),
-                  ],
-                ),
-                onPressed: isButtonEnabled?() {
-                  OTP_send();
-                }:null,
-              ),
-            ],
+            ),
           ),
         ),
       );
@@ -1198,55 +1206,59 @@ class _NewAccountCreateOTPState extends State<NewAccountCreateOTP> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.only(left:25,right: 25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TextField(
-              onChanged:(val){
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(left:25,right: 25),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextField(
+                  onChanged:(val){
 
-                if (val.trim().isEmpty || val.length != 4){
-                  setState(() {
-                    otp_validate = false;
-                  });
-                }else{
-                  setState(() {
-                    otp_validate = true;
-                  });
-                }
+                    if (val.trim().isEmpty || val.length != 4){
+                      setState(() {
+                        otp_validate = false;
+                      });
+                    }else{
+                      setState(() {
+                        otp_validate = true;
+                      });
+                    }
 
-              },
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                // labelText: 'Password',
-                hintText: "OTP Received on your Mobile $Mobile_hashed",
-                hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                  },
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    // labelText: 'Password',
+                    hintText: "OTP Received on your Mobile $Mobile_hashed",
+                    hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
 
 
-              ),
-              controller: otp,
+                  ),
+                  controller: otp,
+                ),
+                SizedBox(height: 20,),
+                RaisedButton(
+                  color: Colors.orange,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      // Icon(Icons.direc,color: Colors.white),
+                      Text('Validate',style: TextStyle(color: Colors.white,),),
+                    ],
+                  ),
+                  onPressed: otp_validate?(){
+                    OTP_Validate();
+                  }:null,
+                ),
+
+              ],
             ),
-            SizedBox(height: 20,),
-            RaisedButton(
-              color: Colors.orange,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  // Icon(Icons.direc,color: Colors.white),
-                  Text('Validate',style: TextStyle(color: Colors.white,),),
-                ],
-              ),
-              onPressed: otp_validate?(){
-                OTP_Validate();
-              }:null,
-            ),
-
-          ],
+          ),
         ),
       ),
     );
@@ -1415,140 +1427,144 @@ class _AccountCreatePasswordSetState extends State<AccountCreatePasswordSet> {
     TextStyle defaultStyle = TextStyle(color: Colors.grey);
     TextStyle linkStyle = TextStyle(color: Colors.blue);
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.only(left:25,right: 25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TextField(
-              onChanged: (val){
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(left:25,right: 25),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextField(
+                  onChanged: (val){
 
-                if (val.length <= 5){
+                    if (val.length <= 5){
 
 
-                  setState(() {
-                    validpwd = false;
-                  });
-                }else{
-
-                  setState(() {
-                    validpwd = true;
-                  });
-                }
-              },
-              obscureText: _isObscure,
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                // labelText: 'Password',
-                errorText: validpwd?null:"Password atleast 6 digit must",
-                hintText: "Enter New Password",
-                hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                suffixIcon: IconButton(
-                    icon: Icon(
-                        _isObscure ? Icons.visibility : Icons.visibility_off),
-                    onPressed: () {
                       setState(() {
-                        _isObscure = !_isObscure;
+                        validpwd = false;
                       });
-                    }),
-              ),
-              controller: forgot_password,
-            ),
-            SizedBox(height: 20,),
-            Visibility(
-              visible: validpwd,
-              child: TextField(
-                onChanged: (val){
+                    }else{
 
-                  if (val != forgot_password.text){
-
-
-                    setState(() {
-                      pwdmatch = false;
-                    });
-                  }else{
-
-                    setState(() {
-                      pwdmatch = true;
-                    });
-                  }
-                },
-                obscureText: _isObscure_conform,
-                textAlign: TextAlign.center,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  // labelText: 'Password',
-                  // errorText: pwdmatch ? "PassWord does not match":null,
-                  hintText: "Retype Password for Confirmation",
-                  hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                  suffixIcon: IconButton(
-                      icon: Icon(
-                          _isObscure_conform ? Icons.visibility : Icons.visibility_off),
-                      onPressed: () {
-                        setState(() {
-                          _isObscure_conform = !_isObscure_conform;
-                        });
-                      }),
+                      setState(() {
+                        validpwd = true;
+                      });
+                    }
+                  },
+                  obscureText: _isObscure,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    // labelText: 'Password',
+                    errorText: validpwd?null:"Password atleast 6 digit must",
+                    hintText: "Enter New Password",
+                    hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                    suffixIcon: IconButton(
+                        icon: Icon(
+                            _isObscure ? Icons.visibility : Icons.visibility_off),
+                        onPressed: () {
+                          setState(() {
+                            _isObscure = !_isObscure;
+                          });
+                        }),
+                  ),
+                  controller: forgot_password,
                 ),
-                controller: conform_password,
-              ),
-            ),
-            SizedBox(height: 30.0,),
-            RaisedButton(
-              color: Colors.orange,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  // Icon(Icons.direc,color: Colors.white),
-                  Text('Sign Up',style: TextStyle(color: Colors.white,),),
-                ],
-              ),
-              onPressed: pwdmatch?(){
+                SizedBox(height: 20,),
+                Visibility(
+                  visible: validpwd,
+                  child: TextField(
+                    onChanged: (val){
 
-                signup_and_signin();
+                      if (val != forgot_password.text){
 
-              }:null,
-            ),
-            SizedBox(height: 20.0,),
-            Visibility(
-              visible: pwdmatch,
-              child: RichText(
-                text: TextSpan(
-                style: defaultStyle,
-                children: <TextSpan>[
-              TextSpan(text: 'By clicking Sign Up, you agree to our '),
-              TextSpan(
-                  text: 'Term,',
-                  style: linkStyle,
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      print('Terms of Service"');
-                    }),
+
+                        setState(() {
+                          pwdmatch = false;
+                        });
+                      }else{
+
+                        setState(() {
+                          pwdmatch = true;
+                        });
+                      }
+                    },
+                    obscureText: _isObscure_conform,
+                    textAlign: TextAlign.center,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      // labelText: 'Password',
+                      // errorText: pwdmatch ? "PassWord does not match":null,
+                      hintText: "Retype Password for Confirmation",
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      suffixIcon: IconButton(
+                          icon: Icon(
+                              _isObscure_conform ? Icons.visibility : Icons.visibility_off),
+                          onPressed: () {
+                            setState(() {
+                              _isObscure_conform = !_isObscure_conform;
+                            });
+                          }),
+                    ),
+                    controller: conform_password,
+                  ),
+                ),
+                SizedBox(height: 30.0,),
+                RaisedButton(
+                  color: Colors.orange,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      // Icon(Icons.direc,color: Colors.white),
+                      Text('Sign Up',style: TextStyle(color: Colors.white,),),
+                    ],
+                  ),
+                  onPressed: pwdmatch?(){
+
+                    signup_and_signin();
+
+                  }:null,
+                ),
+                SizedBox(height: 20.0,),
+                Visibility(
+                  visible: pwdmatch,
+                  child: RichText(
+                    text: TextSpan(
+                    style: defaultStyle,
+                    children: <TextSpan>[
+                  TextSpan(text: 'By clicking Sign Up, you agree to our '),
                   TextSpan(
-                      text: 'Data Policy',
+                      text: 'Term,',
                       style: linkStyle,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           print('Terms of Service"');
                         }),
-              TextSpan(text: ' and  '),
-              TextSpan(
-                  text: 'Cookie Policy',
-                  style: linkStyle,
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      print('Privacy Policy"');
-                    }),
-                  TextSpan(text: ' Also you agree to send and receive SMS and Email notification from us.'),
-          ],
-        ),
-      ),
-            )
-          ],
+                      TextSpan(
+                          text: 'Data Policy',
+                          style: linkStyle,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              print('Terms of Service"');
+                            }),
+                  TextSpan(text: ' and  '),
+                  TextSpan(
+                      text: 'Cookie Policy',
+                      style: linkStyle,
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          print('Privacy Policy"');
+                        }),
+                      TextSpan(text: ' Also you agree to send and receive SMS and Email notification from us.'),
+              ],
+            ),
+          ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

@@ -386,7 +386,7 @@ class _AccountListState extends State<AccountList> {
                 child: Center(
                   child: AwesomeLoader(
                     loaderType: AwesomeLoader.AwesomeLoader3,
-                    // color: Colors.blue,
+                    color: Colors.orangeAccent,
                   ),
                 ),
               );
@@ -836,7 +836,7 @@ class _distinictAccountCreate1State extends State<distinictAccountCreate1> {
           child: Center(
             child: AwesomeLoader(
               loaderType: AwesomeLoader.AwesomeLoader3,
-              color: Colors.blue,
+              color: Colors.orangeAccent,
             ),
           ),
         ),
@@ -853,131 +853,135 @@ class _distinictAccountCreate1State extends State<distinictAccountCreate1> {
           },
           ),
         ),
-        body: Container(
-          padding: EdgeInsets.only(left: 25, right: 25),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Salution',
-                      style: TextStyle(),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(left: 25, right: 25),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Salution',
+                          style: TextStyle(),
+                        ),
+                        DropdownButton(
+                          hint: Text('Select Salution'),
+                          items: SalutionList?.map((item) {
+                            return new DropdownMenuItem(
+                              child: new Text(item['name']),
+                              value: item['id'],
+                            );
+                          })?.toList() ?? [],
+                          value: SalutionId,
+                          onChanged: (value) {
+                            setState(() {
+                              SalutionId = value;
+                            });
+                          },
+                        ),
+                      ],
                     ),
-                    DropdownButton(
-                      hint: Text('Select Salution'),
-                      items: SalutionList?.map((item) {
-                        return new DropdownMenuItem(
-                          child: new Text(item['name']),
-                          value: item['id'],
-                        );
-                      })?.toList() ?? [],
-                      value: SalutionId,
-                      onChanged: (value) {
+                  ),
+                  TextField(
+                    onChanged: (val) {
+                      if (val
+                          .trim()
+                          .isEmpty) {
                         setState(() {
-                          SalutionId = value;
+                          isButtonEnabled = false;
                         });
-                      },
+                      } else {
+                        setState(() {
+                          isButtonEnabled = true;
+                        });
+                      }
+                    },
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your First Name",
+                      labelText: "First Name",
+                      // errorText: phoneVal ? "Mobile Number is required":null,
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
                     ),
-                  ],
-                ),
+                    controller: FirstName,
+                  ),
+                  TextField(
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your Middle Name",
+                      labelText: "Middle Name",
+                      // errorText: phoneVal ? "Mobile Number is required":null,
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
+                    ),
+                    controller: MiddleName,
+                  ),
+                  TextField(
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your Last Name",
+                      labelText: "Last Name",
+                      // errorText: phoneVal ? "Mobile Number is required":null,
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
+                    ),
+                    controller: LastName,
+                  ),
+                  TextField(
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your Nick Name",
+                      labelText: "Nick Name or Alias",
+                      // errorText: phoneVal ? "Mobile Number is required":null,
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
+                    ),
+                    controller: Alias,
+                  ),
+                  SizedBox(height: 20,),
+                  RaisedButton(
+                    color: Colors.orange,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        // Icon(Icons.direc,color: Colors.white),
+                        Text('Next', style: TextStyle(color: Colors.white,),),
+                      ],
+                    ),
+                    onPressed: isButtonEnabled ? () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  distinictAccountCreate2(
+                                    otp:widget.otp,
+                                    personId:widget.personId,
+                                    mobileno: widget.mobileno,
+                                    email: widget.email,
+                                    salution: SalutionId,
+                                    first_name: FirstName.text,
+                                    middle_name: MiddleName.text,
+                                    alisas: Alias.text,
+                                    last_name: LastName.text,
+                                  )));
+                    } : null,
+                  ),
+                ],
               ),
-              TextField(
-                onChanged: (val) {
-                  if (val
-                      .trim()
-                      .isEmpty) {
-                    setState(() {
-                      isButtonEnabled = false;
-                    });
-                  } else {
-                    setState(() {
-                      isButtonEnabled = true;
-                    });
-                  }
-                },
-                obscureText: false,
-                decoration: InputDecoration(
-                  // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                  hintText: "Enter your First Name",
-                  labelText: "First Name",
-                  // errorText: phoneVal ? "Mobile Number is required":null,
-                  // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                ),
-                controller: FirstName,
-              ),
-              TextField(
-                obscureText: false,
-                decoration: InputDecoration(
-                  // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                  hintText: "Enter your Middle Name",
-                  labelText: "Middle Name",
-                  // errorText: phoneVal ? "Mobile Number is required":null,
-                  // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                ),
-                controller: MiddleName,
-              ),
-              TextField(
-                obscureText: false,
-                decoration: InputDecoration(
-                  // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                  hintText: "Enter your Last Name",
-                  labelText: "Last Name",
-                  // errorText: phoneVal ? "Mobile Number is required":null,
-                  // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                ),
-                controller: LastName,
-              ),
-              TextField(
-                obscureText: false,
-                decoration: InputDecoration(
-                  // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                  hintText: "Enter your Nick Name",
-                  labelText: "Nick Name or Alias",
-                  // errorText: phoneVal ? "Mobile Number is required":null,
-                  // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                ),
-                controller: Alias,
-              ),
-              SizedBox(height: 20,),
-              RaisedButton(
-                color: Colors.orange,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    // Icon(Icons.direc,color: Colors.white),
-                    Text('Next', style: TextStyle(color: Colors.white,),),
-                  ],
-                ),
-                onPressed: isButtonEnabled ? () {
-                  Navigator.push(context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              distinictAccountCreate2(
-                                otp:widget.otp,
-                                personId:widget.personId,
-                                mobileno: widget.mobileno,
-                                email: widget.email,
-                                salution: SalutionId,
-                                first_name: FirstName.text,
-                                middle_name: MiddleName.text,
-                                alisas: Alias.text,
-                                last_name: LastName.text,
-                              )));
-                } : null,
-              ),
-            ],
+            ),
           ),
         ),
 
@@ -1098,7 +1102,7 @@ class _distinictAccountCreate2State extends State<distinictAccountCreate2> {
           child: Center(
             child: AwesomeLoader(
               loaderType: AwesomeLoader.AwesomeLoader3,
-              color: Colors.blue,
+              color: Colors.orangeAccent,
             ),
           ),
         ),
@@ -1115,115 +1119,119 @@ class _distinictAccountCreate2State extends State<distinictAccountCreate2> {
           },
           ),
         ),
-        body: Container(
-          padding: EdgeInsets.only(left: 25, right: 25),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Gender',
-                      style: TextStyle(),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(left: 25, right: 25),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Gender',
+                          style: TextStyle(),
+                        ),
+                        DropdownButton(
+                          hint: Text('Select'),
+                          items: Gender?.map((item) {
+                            return new DropdownMenuItem(
+                              child: new Text(item['name']),
+                              value: item['id'],
+                            );
+                          })?.toList() ?? [],
+                          value: GenderId,
+                          onChanged: (value) {
+                            setState(() {
+                              GenderId = value;
+                            });
+                          },
+                        ),
+                      ],
                     ),
-                    DropdownButton(
-                      hint: Text('Select'),
-                      items: Gender?.map((item) {
-                        return new DropdownMenuItem(
-                          child: new Text(item['name']),
-                          value: item['id'],
-                        );
-                      })?.toList() ?? [],
-                      value: GenderId,
-                      onChanged: (value) {
-                        setState(() {
-                          GenderId = value;
-                        });
-                      },
+                  ),
+                  TextField(
+                    readOnly: true,
+                    controller: DOB,
+                    style: TextStyle(fontSize: 14),
+                    decoration: InputDecoration(
+                      hintText: 'Pick Date',
+                      labelText: 'DOB',
+                      labelStyle: TextStyle(fontSize: 14.0),
+                      hintStyle: TextStyle(fontSize: 14.0),
+                      // suffixIcon: Icon(Icons.calendar_today_rounded,size: 18.0)
                     ),
-                  ],
-                ),
+                    onTap: () async {
+                      // final DateTime now = DateTime.now();
+                      final DateFormat formatter = DateFormat('dd-MM-yyyy');
+                      var date = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime(2100)
+                      );
+                      DOB.text = date.toString().substring(0, 10);
+                    },),
+                  SizedBox(height: 20,),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Blood Group',
+                          style: TextStyle(),
+                        ),
+                        DropdownButton(
+                          hint: Text('Select'),
+                          items: BloodGroup?.map((item) {
+                            return new DropdownMenuItem(
+                              child: new Text(item['name']),
+                              value: item['id'],
+                            );
+                          })?.toList() ?? [],
+                          value: BloodGroupId,
+                          onChanged: (value) {
+                            setState(() {
+                              BloodGroupId = value;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  RaisedButton(
+                    color: Colors.orange,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        // Icon(Icons.direc,color: Colors.white),
+                        Text('Next', style: TextStyle(color: Colors.white,),),
+                      ],
+                    ),
+                    onPressed: () {
+                      // OTP_send();
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) => distnictAccountCreatePasswordSet(
+                                  otp:widget.otp,
+                                  personId :widget.personId,
+                                  mobileno:widget.mobileno,email:widget.email,
+                                  salution:widget.salution,first_name:widget.first_name,middle_name:widget.middle_name,last_name:widget.last_name,alisas:widget.alisas,gender:GenderId,Dob:DOB.text,bloodgroup:BloodGroupId
+                              )));
+                    },
+                  ),
+                ],
               ),
-              TextField(
-                readOnly: true,
-                controller: DOB,
-                style: TextStyle(fontSize: 14),
-                decoration: InputDecoration(
-                  hintText: 'Pick Date',
-                  labelText: 'DOB',
-                  labelStyle: TextStyle(fontSize: 14.0),
-                  hintStyle: TextStyle(fontSize: 14.0),
-                  // suffixIcon: Icon(Icons.calendar_today_rounded,size: 18.0)
-                ),
-                onTap: () async {
-                  // final DateTime now = DateTime.now();
-                  final DateFormat formatter = DateFormat('dd-MM-yyyy');
-                  var date = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime(2100)
-                  );
-                  DOB.text = date.toString().substring(0, 10);
-                },),
-              SizedBox(height: 20,),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Blood Group',
-                      style: TextStyle(),
-                    ),
-                    DropdownButton(
-                      hint: Text('Select'),
-                      items: BloodGroup?.map((item) {
-                        return new DropdownMenuItem(
-                          child: new Text(item['name']),
-                          value: item['id'],
-                        );
-                      })?.toList() ?? [],
-                      value: BloodGroupId,
-                      onChanged: (value) {
-                        setState(() {
-                          BloodGroupId = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20,),
-              RaisedButton(
-                color: Colors.orange,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    // Icon(Icons.direc,color: Colors.white),
-                    Text('Next', style: TextStyle(color: Colors.white,),),
-                  ],
-                ),
-                onPressed: () {
-                  // OTP_send();
-                  Navigator.push(context,
-                      MaterialPageRoute(
-                          builder: (context) => distnictAccountCreatePasswordSet(
-                              otp:widget.otp,
-                              personId :widget.personId,
-                              mobileno:widget.mobileno,email:widget.email,
-                              salution:widget.salution,first_name:widget.first_name,middle_name:widget.middle_name,last_name:widget.last_name,alisas:widget.alisas,gender:GenderId,Dob:DOB.text,bloodgroup:BloodGroupId
-                          )));
-                },
-              ),
-            ],
+            ),
           ),
         ),
       );
@@ -1294,11 +1302,11 @@ class _distnictAccountCreatePasswordSetState extends State<distnictAccountCreate
       'mobile_no':widget.mobileno,
     };
 
-    print(data);
+
     var res = await Network().postMethodWithOutToken(data, '/SignUp');
 
     var body = json.decode(res.body);
-    print(body);
+
     if(body['status'] == 1){
 
       SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -1332,7 +1340,7 @@ class _distnictAccountCreatePasswordSetState extends State<distnictAccountCreate
   Widget build(BuildContext context) {
     TextStyle defaultStyle = TextStyle(color: Colors.grey);
     TextStyle linkStyle = TextStyle(color: Colors.blue);
-    print(widget.otp);
+
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(left:25,right: 25),

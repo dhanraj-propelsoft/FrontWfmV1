@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:bottom_loader/bottom_loader.dart';
 
 class TaskDetails extends StatefulWidget {
   final int id;
@@ -38,6 +39,7 @@ class _TaskDetailsState extends State<TaskDetails> {
     int taskprorityid;
     List actionlist;
     Future myFuture;
+    BottomLoader bl;
 
     List<CompanyWidget> _companies = [];
     List<int> _filters = [];
@@ -46,9 +48,18 @@ class _TaskDetailsState extends State<TaskDetails> {
 
     Future<List> follower_update(value) async {
 
-
+      bl = new BottomLoader(
+        context,
+        showLogs: true,
+        isDismissible: true,
+      );
+      bl.style(
+        message: 'Please wait...',
+      );
+      bl.display();
 
         var data = {'task_id':widget.id,'follower_id':value};
+        print(data);
         var res = await Network().postMethodWithToken(data, '/taskfollowerupdate');
         Fluttertoast.showToast(
 
@@ -60,12 +71,20 @@ class _TaskDetailsState extends State<TaskDetails> {
             textColor: Colors.black
         );
         myFuture = taskDetails();
-
+        bl.close();
 
     }
 
     Future<List> action_changed(int actionId,int statusId,int taskId) async {
-
+      bl = new BottomLoader(
+        context,
+        showLogs: true,
+        isDismissible: true,
+      );
+      bl.style(
+        message: 'Please wait...',
+      );
+      bl.display();
       var data = {'taskId' : taskId,'actionId':actionId,'statusId':statusId};
       var res = await Network().postMethodWithToken(data, '/taskAction');
       var body = json.decode(res.body);
@@ -81,7 +100,7 @@ class _TaskDetailsState extends State<TaskDetails> {
             textColor: Colors.black
         );
         myFuture = taskDetails();
-
+  bl.close();
         // setState(() {
         //   myFuture = taskData();
         // });
@@ -226,8 +245,9 @@ class _TaskDetailsState extends State<TaskDetails> {
                 Project = snapshot.data['pProjectVO'].runtimeType == bool?"":snapshot.data['pProjectVO']['pName'];
                 Assignedto = snapshot.data['pTaskWorkforceVO']['pFirstName'];
                 actionlist = snapshot.data['pTaskActionListVo'];
-                snapshot.data['pEmployeeVO'].forEach((item) => _companies .add(CompanyWidget(item['id'], item['first_name'])));
-                // _companies = [];
+                _companies = [];
+                snapshot.data['pEmployeeVO'].forEach((item) => _companies .add(CompanyWidget(item['person']['id'], item['person']['first_name'])));
+                _filters = [];
                 snapshot.data['pTaskFollowerVO'].forEach((item) => _filters .add(item['pId']));
                 _companies.removeWhere((item) => item.id == snapshot.data['pTaskWorkforceVO']['pId']);
                 _companies.removeWhere((item) => item.id == snapshot.data['pTaskCreatorVO']['pId']);
