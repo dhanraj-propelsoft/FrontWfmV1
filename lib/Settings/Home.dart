@@ -91,12 +91,22 @@ class _SettingState extends State<Setting> {
                           builder: (context) => OrganizationSettings(
                           )));
                 },
-                title: Text("Organizations Setting"),
+                title: Text("Organization"),
                 trailing: Icon(Icons.arrow_forward_ios_sharp),
               ),
               Divider(),
               ListTile(
-                title: Text("Refer a Friends"),
+                title: Text("Inbox"),
+                trailing: Icon(Icons.arrow_forward_ios_sharp),
+              ),
+              Divider(),
+              ListTile(
+                title: Text("Feedback and Support Ticket"),
+                trailing: Icon(Icons.arrow_forward_ios_sharp),
+              ),
+              Divider(),
+              ListTile(
+                title: Text("Refer / invite friends"),
                 trailing: Icon(Icons.arrow_forward_ios_sharp),
               ),
               Divider(),

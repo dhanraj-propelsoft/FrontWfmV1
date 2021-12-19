@@ -65,11 +65,10 @@ class _TaskListState extends State<TaskList> {
 
   Future<List> taskData() async {
     final orgId = await get_orgId();
-    print(orgId);
     final prefs = await SharedPreferences.getInstance();
     unAssignedcategory = prefs.getBool('unAssignedcategory') == null?true:prefs.getBool('unAssignedcategory');
     unAssignedProject = prefs.getBool('unAssignedproject') == null?true:prefs.getBool('unAssignedproject');
-    var res = await Network().taskList('/Dashboard/$orgId');
+    var res = await Network().getMethodWithToken('/Dashboard/$orgId');
 
     var body = json.decode(res.body);
     return [];
@@ -90,7 +89,7 @@ class _TaskListState extends State<TaskList> {
     );
     bl.display();
     var data = {'taskId' : taskId,'actionId':actionId,'statusId':statusId};
-    var res = await Network().ProjectStore(data, '/taskAction');
+    var res = await Network().postMethodWithToken(data, '/taskAction');
     var body = json.decode(res.body);
     if(body['status'] == 1){
       Fluttertoast.showToast(

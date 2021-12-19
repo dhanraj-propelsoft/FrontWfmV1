@@ -239,11 +239,12 @@ class _TaskListState extends State<TaskList> {
                                     InkWell(
                                       onTap: (){
 
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(builder: (context) =>
-                                                TaskDetails(
-                                                    id: snapshot.data[i]['pId']
-                                                )));
+                                        //  temporary hide from ajith
+                                        // Navigator.of(context).push(
+                                        //     MaterialPageRoute(builder: (context) =>
+                                        //         TaskDetails(
+                                        //             id: snapshot.data[i]['pId']
+                                        //         )));
                                       },
                                       child: Column(
                                         children: [
