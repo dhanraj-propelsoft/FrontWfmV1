@@ -3,11 +3,12 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Network {
-  // final String _url = 'http://127.0.0.1:8000/api';
+   final String _url = 'http://127.0.0.1:8000/api';
 
-  final String _url = 'http://wfm.mypropelsoft.com/api';
+  //final String _url = 'http://wfm.mypropelsoft.com/api';
   var token;
   var alldata;
+   //var alldata By DHana From Android Studip;
 
   _getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
