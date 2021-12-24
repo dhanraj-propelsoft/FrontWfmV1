@@ -1,8 +1,9 @@
 import 'dart:convert';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:propel/network_utils/api.dart';
+import 'package:awesome_loader/awesome_loader.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -16,159 +17,209 @@ class _ProfileState extends State<Profile> {
   final DOB = new TextEditingController();
   final HomeAddress = new TextEditingController();
   final OfficeAddress = new TextEditingController();
+  bool _isLoading = false;
+
+  void get_data() async {
+
+    setState(() {
+      _isLoading = true;
+    });
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var user = localStorage.getString('personData');
+    final personDetails = jsonDecode(user);
+    var personId = personDetails['id'];
+    var res = await Network().getMethodWithOutToken('/finddataByPersonId/$personId');
+    var body = json.decode(res.body);
+
+    if(body['status'] == 1){
+      var result = body['data'];
+      print(result);
+      
+      setState(() {
+
+        Name.text = result['pFirstName'];
+        MobileNo.text =result['pPersonMobileDetails']['mobile_no'];
+        Email.text = result['pPersonEmailDetails']['email'];
+        DOB.text = result['pDob'];
+
+
+        _isLoading = false;
+      });
+      return result;
+    }
+  }
   @override
+  void initState() {
+    super.initState();
+    get_data();
+
+  }
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.grey[350],
-        title: Text(
-          "Profile",
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(10.0),
-          child: Container(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Column(
-              children: [
-                Center(
-                  child: CircleAvatar(
-                    radius: 60,
-                    backgroundImage: AssetImage('assets/splash_img.jpg'),
-                  ),
-                ),
-                TextField(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(builder: (context) => NameUpdate()),
-                    );
-                  },
-                  keyboardType: TextInputType.number,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                    hintText: "Enter your Name",
-                    labelText: "Name",
-
-                    // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                  ),
-                  controller: Name,
-                ),
-                TextField(
-                  // onTap: () {
-                  //   mobile_update();
-                  // },
-                  keyboardType: TextInputType.number,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                    hintText: "Enter your Mobile",
-                    labelText: "Mobile",
-
-                    // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                  ),
-                  controller: MobileNo,
-                ),
-                TextField(
-                  // onTap: (){
-                  //   email_update();
-                  // },
-                  // keyboardType: TextInputType.number,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                    hintText: "Enter your Email",
-                    labelText: "Email",
-
-                    // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                  ),
-                  controller: Email,
-                ),
-                TextField(
-                  onTap: () async {
-                    // final DateTime now = DateTime.now();
-                    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-
-                    var date = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime(2100));
-                    DOB.text = date.toString().substring(0, 10);
-                  },
-                  // keyboardType: TextInputType.number,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                    hintText: "Enter your DOB",
-                    labelText: "DOB",
-
-                    // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                  ),
-                  controller: DOB,
-                ),
-                TextField(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => AddressUpdate()),
-                    );
-                  },
-                  // keyboardType: TextInputType.number,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                    hintText: "Enter your Address",
-                    labelText: "Home Address",
-
-                    // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                  ),
-                  controller: HomeAddress,
-                ),
-                TextField(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => AddressUpdate()),
-                    );
-                  },
-                  // keyboardType: TextInputType.number,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
-                    hintText: "Enter your Address",
-                    labelText: "Office Address",
-
-                    // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
-                  ),
-                  controller: OfficeAddress,
-                ),
-              ],
+    if(_isLoading){
+      return Scaffold(
+        body: Container(
+          child: Center(
+            child: AwesomeLoader(
+              loaderType: AwesomeLoader.AwesomeLoader3,
+              color: Colors.orangeAccent,
             ),
           ),
         ),
-      ),
-    );
+      );
+    }else {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.grey[350],
+          title: Text(
+            "Profile",
+            style: TextStyle(color: Colors.black),
+          ),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(10.0),
+            child: Container(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Column(
+                children: [
+                  Center(
+                    child: CircleAvatar(
+                      radius: 60,
+                      backgroundImage: AssetImage('assets/splash_img.jpg'),
+                    ),
+                  ),
+                  TextField(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => NameUpdate()),
+                      );
+                    },
+                    keyboardType: TextInputType.number,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your Name",
+                      labelText: "Name",
+
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
+                    ),
+                    controller: Name,
+                  ),
+                  TextField(
+                    // onTap: () {
+                    //   mobile_update();
+                    // },
+                    keyboardType: TextInputType.number,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your Mobile",
+                      labelText: "Mobile",
+
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
+                    ),
+                    controller: MobileNo,
+                  ),
+                  TextField(
+                    // onTap: (){
+                    //   email_update();
+                    // },
+                    // keyboardType: TextInputType.number,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your Email",
+                      labelText: "Email",
+
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
+                    ),
+                    controller: Email,
+                  ),
+                  TextField(
+                    onTap: () async {
+                      // final DateTime now = DateTime.now();
+                      final DateFormat formatter = DateFormat('dd-MM-yyyy');
+
+                      var date = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime(2100));
+                      DOB.text = date.toString().substring(0, 10);
+                    },
+                    // keyboardType: TextInputType.number,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your DOB",
+                      labelText: "DOB",
+
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
+                    ),
+                    controller: DOB,
+                  ),
+                  TextField(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => AddressUpdate()),
+                      );
+                    },
+                    // keyboardType: TextInputType.number,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your Address",
+                      labelText: "Home Address",
+
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
+                    ),
+                    controller: HomeAddress,
+                  ),
+                  TextField(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => AddressUpdate()),
+                      );
+                    },
+                    // keyboardType: TextInputType.number,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
+                      hintText: "Enter your Address",
+                      labelText: "Office Address",
+
+                      // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
+                    ),
+                    controller: OfficeAddress,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   void name_update() async {
