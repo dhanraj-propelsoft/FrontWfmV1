@@ -30,7 +30,7 @@ class _ProfileState extends State<Profile> {
     var personId = personDetails['id'];
     var res = await Network().getMethodWithOutToken('/finddataByPersonId/$personId');
     var body = json.decode(res.body);
-
+    print(body);
     if(body['status'] == 1){
       var result = body['data'];
       print(result);
@@ -71,7 +71,7 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           backgroundColor: Colors.grey[350],
           title: Text(
-            "Profile",
+            "Profile Info",
             style: TextStyle(color: Colors.black),
           ),
           leading: IconButton(
@@ -150,24 +150,24 @@ class _ProfileState extends State<Profile> {
                     controller: Email,
                   ),
                   TextField(
-                    onTap: () async {
-                      // final DateTime now = DateTime.now();
-                      final DateFormat formatter = DateFormat('dd-MM-yyyy');
-
-                      var date = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime(2100));
-                      DOB.text = date.toString().substring(0, 10);
-                    },
+                    // onTap: () async {
+                    //   // final DateTime now = DateTime.now();
+                    //   final DateFormat formatter = DateFormat('dd-MM-yyyy');
+                    //
+                    //   var date = await showDatePicker(
+                    //       context: context,
+                    //       initialDate: DateTime.now(),
+                    //       firstDate: DateTime(1900),
+                    //       lastDate: DateTime(2100));
+                    //   DOB.text = date.toString().substring(0, 10);
+                    // },
                     // keyboardType: TextInputType.number,
                     obscureText: false,
                     decoration: InputDecoration(
                       // contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                       hintStyle: TextStyle(fontSize: 15.0, color: Colors.grey),
                       hintText: "Enter your DOB",
-                      labelText: "DOB",
+                      labelText: "Gender/Blood Group/DOB",
 
                       // border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
                     ),
