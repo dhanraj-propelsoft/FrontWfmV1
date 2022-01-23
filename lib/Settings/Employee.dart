@@ -13,6 +13,9 @@ class _EmployeeListState extends State<EmployeeList> {
   int prorityid = 2;
   Future myFuture;
   bool firstorg = false;
+  String Name;
+  String MobileNo;
+  String Email;
 
   get_orgId() async{
     int org_id = await Network().GetActiveOrg();
@@ -79,9 +82,6 @@ class _EmployeeListState extends State<EmployeeList> {
               print('Error in Loading'+snapshot.error.toString());
             }
             if(snapshot.hasData){
-
-
-
              // var Name ;
              // var MobileNo;
              // var Email;
@@ -100,23 +100,64 @@ class _EmployeeListState extends State<EmployeeList> {
                               itemBuilder: (context, i){
 
                                 var res = snapshot.data[i];
-                                print(res['person']);
-                                print(res['person']['first_name']);
-                                return Column(children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 30,
-                                        backgroundImage: AssetImage('assets/splash_img.jpg'),
-                                      ),
-                                      SizedBox(width: 50.0,),
-                                      Container(
-                                        child:
-                                        Text("Rajesh\-\n9443447755,rajesh@propelsoft.in"),
-                                      ),
+                                var first_name = snapshot.data[i]['pFirstName'];
+                                var middle_name = snapshot.data[i]['pMiddleName'];
+                                var last_name = snapshot.data[i]['pLastName'];
 
-                                    ],
+
+                              var name = res['person']['first_name'];
+                                return Column(children: [
+                                  // Row(
+                                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  //   children: [
+                                  //     CircleAvatar(
+                                  //       radius: 30,
+                                  //       backgroundImage: AssetImage('assets/splash_img.jpg'),
+                                  //     ),
+                                  //
+                                  //     Container(
+                                  //       child:
+                                  //       Text(res['person']['first_name']),
+                                  //     ),
+                                  //
+                                  //   ],
+                                  // ),
+                                  // Row(
+                                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  //   children: [
+                                  //     Container(),
+                                  //     CircleAvatar(
+                                  //       radius: 40,
+                                  //       backgroundImage: AssetImage('assets/splash_img.jpg'),
+                                  //     ),
+                                  //     Container(),
+                                  //     Container(
+                                  //
+                                  //       child: Text("$name\n$MobileNo$Email"),
+                                  //
+                                  //     ),
+                                  //     Container()
+                                  //   ],
+                                  // ),
+                                  ListTile(
+                                    leading: CircleAvatar(
+                                      // backgroundImage: AssetImage(widget.image),
+                                      child: Text(
+                                          "A"),
+                                      maxRadius: 50,
+                                    ),
+                                    title: Text('Ajith'),
+                                    subtitle: Column(
+                                      children: [
+                                        Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text("Designations")),
+                                        Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text("8489324,shdfsdfgf")),
+                                      ],
+                                    ),
+
                                   ),
                                   Divider()
                                 ],);
