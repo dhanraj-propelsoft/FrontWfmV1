@@ -42,7 +42,7 @@ class _projectState extends State<project> {
     final orgId = await get_orgId();
     var res = await Network().getMethodWithToken('/projectList/$orgId');
     var body = json.decode(res.body);
-
+  print(body);
     if(body['status'] == 1){
       var result = body['data'];
       setState(() {

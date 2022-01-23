@@ -44,9 +44,25 @@ class _SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.grey[350],
+        title: Text(
+          "Settings",
+          style: TextStyle(color: Colors.black),
+        ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.only(top: 30.0,bottom: 20.0,left: 10.0,right: 10.0),
+          padding: EdgeInsets.only(bottom: 20.0,left: 10.0,right: 10.0),
           child: Column(
             children: [
               InkWell(

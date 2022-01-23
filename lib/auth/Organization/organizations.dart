@@ -47,7 +47,7 @@ class _OrganizationsState extends State<Organizations> {
   Future<List> orgData() async {
     var res = await Network().getMethodWithToken('/organization_list');
     var body = json.decode(res.body);
-    print(body['data']);
+
     if (body['status'] == 1) {
       var result = body['data'];
       setState(() {

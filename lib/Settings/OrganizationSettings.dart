@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:propel/Settings/Profile.dart';
 import 'package:propel/auth/Organization/OrganizationDetails.dart';
+import 'package:propel/Settings/Employee.dart';
 
 class OrganizationSettings extends StatefulWidget {
   @override
@@ -81,10 +82,10 @@ class _OrganizationSettingsState extends State<OrganizationSettings> {
               title: Text("Manage Workforce"),
               trailing: Icon(Icons.arrow_forward_ios_sharp),
               onTap: () {
-                // Navigator.push(context,
-                //     MaterialPageRoute(
-                //         builder: (context) => OrganizationSettings(
-                //         )));
+                Navigator.push(context,
+                    MaterialPageRoute(
+                        builder: (context) => EmployeeList(
+                        )));
               },
             ),
             Divider(),
@@ -126,7 +127,7 @@ class _OrganizationListState extends State<OrganizationList> {
       appBar: AppBar(
         backgroundColor: Colors.grey[350],
         title: Text(
-          "Organizations2",
+          "Organizations",
           style: TextStyle(color: Colors.black),
         ),
         leading: IconButton(
