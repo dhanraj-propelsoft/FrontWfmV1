@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:propel/Settings/Employee/EmployeeAdd.dart';
 import 'package:propel/network_utils/api.dart';
 import 'dart:convert';
 import 'package:awesome_loader/awesome_loader.dart';
@@ -185,8 +186,8 @@ class _EmployeeListState extends State<EmployeeList> {
                               ],
                             ),
                             onPressed: () {
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //     builder: (context) => OrganizationDetails()));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => EmployeeAdd()));
                             }),
                       ],
                     ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:propel/Settings/Profile.dart';
 import 'package:propel/auth/Organization/OrganizationDetails.dart';
-import 'package:propel/Settings/Employee.dart';
+import 'Employee/EmployeeList.dart';
 
 class OrganizationSettings extends StatefulWidget {
   @override

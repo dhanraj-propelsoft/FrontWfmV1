@@ -91,10 +91,10 @@ class _SettingState extends State<Setting> {
               Divider(),
               ListTile(
                 onTap: (){
-                  Navigator.push(context,
-                      MaterialPageRoute(
-                          builder: (context) => MySettings(
-                          )));
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => MySettings(
+                  //         )));
                 },
                 title: Text("My Setting"),
                 trailing: Icon(Icons.arrow_forward_ios_sharp),
